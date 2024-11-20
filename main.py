@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from typing import Optional
+from pydantic import BaseModel
 
 app= FastAPI()
 
@@ -36,4 +37,20 @@ async def greet_name(name:Optional[str]="User", age:int=0) -> dict:
     return {
         "message": f"hello {name}",
         "age": age
+    }
+
+
+# request data post method
+class BookCreate(BaseModel):
+    title: str
+    author: str
+    year: int
+
+@app.post('/create_book')
+async def create_book(book: BookCreate) -> dict:
+    return {
+        "message": "book created",
+        "title": book.title,
+        "author": book.author,
+        "year": book.year
     }
